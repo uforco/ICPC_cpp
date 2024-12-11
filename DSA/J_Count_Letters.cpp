@@ -6,7 +6,6 @@ class Alphbet {
         char letter;
         int num;
 };
-
 int main(){
     string s;
     cin>>s;
