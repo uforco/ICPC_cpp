@@ -1,76 +1,155 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-bool nextCheck(string strs)
+class Node
 {
-
-    bool isNotSam = true;
-    for (int i = 0; i < strs.size(); i += 2)
+public:
+    int data;
+    Node *next;
+    Node()
     {
-        if (strs[i] + 0 == 40 && strs[i + 1] + 0 == 41)
-        {
-            continue;
-        }
-        else if (strs[i] + 0 == 91 && strs[i + 1] + 0 == 93)
-        {
-            continue;
-        }
-        else if (strs[i] + 0 == 123 && strs[i + 1] + 0 == 125)
-        {
-            continue;
-        }
-        else
-        {
-            isNotSam = false;
-        }
+        this->data = 0;
+        next = NULL;
     }
-    return isNotSam;
+    Node(int data)
+    {
+        this->data = data;
+        this->next = NULL;
+    }
+    Node(int data, Node *next)
+    {
+        this->data = data;
+        this->next = next;
+    }
 };
 
-bool lastINfast(string strs)
+class Stack
 {
-    bool isnotsame = true;
-    int i = 0, j = strs.size() - 1;
-    while (i < j)
+    // Write your code here
+    Node *Head = NULL;
+    Node *Tail = NULL;
+    int count = 0;
+
+public:
+    Stack()
     {
-        string str = "";
-        str += strs[i];
-        str += strs[j];
-
-        if (!nextCheck(str))
-        {
-            isnotsame = false;
-            break;
-        }
-
-        i++;
-        j--;
+        // Write your code here
     }
-    return isnotsame;
+
+    int getSize()
+    {
+        // Write your code here
+        return count;
+    }
+
+    bool isEmpty()
+    {
+        // Write your code here
+        if (Head == NULL)
+            return true;
+        else
+            return false;
+    }
+
+    void push(int data)
+    {
+        count++;
+        Node *newNode = new Node(data);
+        // Write your code here
+        if (Head == NULL)
+        {
+            Head = newNode;
+            Tail = newNode;
+            return;
+        }
+        Tail->next = newNode;
+        Tail = Tail->next;
+    }
+
+    void pop()
+    {
+        // Write your code here
+        count--;
+        Node *team = Head;
+        if (team->next == NULL)
+        {
+            Head = NULL;
+            Tail = NULL;
+            return;
+        }
+        Node *deleteNode = Tail;
+        while (team != NULL)
+        {
+            if (team->next == deleteNode)
+            {
+                Tail = team;
+                Tail->next = NULL;
+                break;
+            }
+            team = team->next;
+        }
+        delete deleteNode;
+    }
+
+    int getTop()
+    {
+        // Write your code here
+        return Tail->data;
+    }
 };
 
 int main()
 {
-    string strs = "(";
+    Stack st;
 
-    // cout << strs.size() / 2 << endl;
+    st.push(4);
+    st.push(35);
+    st.push(34);
+    st.push(4);
+    st.push(5);
 
-    // cout << strs[1] << endl;
+    // cout << st.getSize();
 
-    if (strs.size() == 1)
-    {
-        cout << " No Mech ";
-        return 0;
-    }
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    // st.pop();
 
-    if (nextCheck(strs) || lastINfast(strs))
-    {
-        cout << " 1st and 2nd check program run with nextCheck or lastINfast ";
-    }
-    else
-    {
-        cout << " No Mech ";
-    }
+    cout << st.getSize() << endl;
+
+    if (!st.isEmpty())
+        cout << st.getTop();
+
+    // Node *head = NULL;
+    // Node *tail = NULL;
+
+    // Node *newnode = new Node(10);
+
+    // if (head == NULL)
+    // {
+    //     head = newnode;
+    //     tail = newnode;
+    // }
+
+    // Node *a = new Node(20);
+    // Node *b = new Node(20);
+    // Node *c = new Node(20);
+
+    // tail->next = a;
+    // tail = tail->next;
+    // tail->next = b;
+    // tail = tail->next;
+    // tail->next = c;
+    // tail = tail->next;
+
+    // Node *team = head;
+
+    // while (team == NULL)
+    // {
+    //     /* code */
+    //     cout << team->data << endl;
+    //     team team->next;
+    // }
 
     return 0;
 }
