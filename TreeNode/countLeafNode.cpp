@@ -66,13 +66,46 @@ int leafNodeCount(BNode *root)
     return sum;
 }
 
+bool isNumber(BNode *root, int x)
+{
+    if (root == NULL)
+        return false;
+    if (root->val == x)
+        return true;
+    return isNumber(root->left, x) || isNumber(root->right, x);
+}
+
+int isNumberDapt(BNode *root, int x)
+{
+    // int isExist = 0;
+    if (root == NULL)
+        return 0;
+    int l = isNumberDapt(root->left, x);
+    int r = isNumberDapt(root->right, x);
+    if (root->val == x)
+        return max(l, r) + 1;
+    if (l >= 0 && r >= 0)
+        return max(l, r) + 1;
+    else
+        return max(l, r);
+}
+
+int lvltree(BNode *root)
+{
+    if (root == NULL)
+        return 0;
+    int l = lvltree(root->left);
+    int r = lvltree(root->right);
+    return max(l, r) + 1;
+}
+
 int main()
 {
     BNode *root = insert_tree();
 
-    int leafNode = leafNodeCount(root);
+    // int leafNode = leafNodeCount(root);
 
-    cout << leafNode;
+    cout << isNumberDapt(root, 6) << endl;
 
     return 0;
 }
