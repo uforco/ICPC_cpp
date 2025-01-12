@@ -77,26 +77,58 @@ bool isNumber(BNode *root, int x)
 
 int isNumberDapt(BNode *root, int x)
 {
-    // int isExist = 0;
+    int lvl = 0;
+    // vector<int> v;
+    bool flag = false;
     if (root == NULL)
         return 0;
-    int l = isNumberDapt(root->left, x);
-    int r = isNumberDapt(root->right, x);
-    if (root->val == x)
-        return max(l, r) + 1;
-    if (l >= 0 && r >= 0)
-        return max(l, r) + 1;
+    // cout << root->val << " ";
+    queue<BNode *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        BNode *f = q.front();
+        q.pop();
+
+        if (f->val == x)
+        {
+            lvl++;
+            flag = true;
+            break;
+        }
+
+        if (f->left)
+        {
+            q.push(f->left);
+        }
+        if (f->right)
+        {
+            q.push(f->right);
+        }
+
+        lvl++;
+    };
+
+    if (flag)
+        return lvl;
     else
-        return max(l, r);
+        return 0;
 }
 
-int lvltree(BNode *root)
+int lvltree(BNode *root, int x)
 {
     if (root == NULL)
         return 0;
-    int l = lvltree(root->left);
-    int r = lvltree(root->right);
-    return max(l, r) + 1;
+    if (root->val == x)
+        return 1;
+    int l = lvltree(root->left, x);
+    int r = lvltree(root->right, x);
+    if (l)
+        return l + 1;
+    if (r)
+        return r + 1;
+    return 0;
 }
 
 int main()
@@ -105,7 +137,7 @@ int main()
 
     // int leafNode = leafNodeCount(root);
 
-    cout << isNumberDapt(root, 6) << endl;
+    cout << lvltree(root, 25) << endl;
 
     return 0;
 }

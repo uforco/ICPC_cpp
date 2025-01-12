@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 class BNode
 {
 public:
@@ -53,26 +54,31 @@ BNode *insert_tree()
     return root;
 }
 
-vector<int> printTree(BNode *root)
+vector<int> leftlvlint(BNode *root)
 {
+    bool feq[3005] = {false};
+    queue<pair<BNode *, int>> q;
+    q.push({root, 1});
     vector<int> v;
-    if (root == NULL)
-        return v;
 
-    // cout << root->val << " ";
-    vector<int> vl = printTree(root->left);
-
-    vector<int> vr = printTree(root->right);
-
-    if (root->left)
+    while (!q.empty())
     {
-        int x = root->left->val;
-        v.push_back(x);
+        pair pr = q.front();
+        q.pop();
+        BNode *node = pr.first;
+        int lvl = pr.second;
+
+        if (feq[lvl] == false)
+        {
+            v.push_back(node->val);
+            feq[lvl] = true;
+        }
+
+        if (node->left)
+            q.push({node->left, lvl + 1});
+        if (node->right)
+            q.push({node->right, lvl + 1});
     }
-    v.insert(v.end(), vl.begin(), vl.end());
-
-    v.insert(v.end(), vr.begin(), vr.end());
-
     return v;
 }
 
@@ -81,11 +87,11 @@ int main()
 
     BNode *root = insert_tree();
 
-    vector<int> v = printTree(root);
+    vector<int> leftlvlnode = leftlvlint(root);
 
-    for (int i = 0; i < v.size(); i++)
+    for (auto i : leftlvlnode)
     {
-        cout << v[i] << " ";
+        cout << i << " ";
     }
 
     return 0;

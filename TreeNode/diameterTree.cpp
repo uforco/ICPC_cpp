@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 class BNode
 {
 public:
@@ -53,27 +54,27 @@ BNode *insert_tree()
     return root;
 }
 
-vector<int> printTree(BNode *root)
+int mx = 0;
+
+int lvldiameter(BNode *root)
 {
-    vector<int> v;
     if (root == NULL)
-        return v;
+        return 0;
+    int l = lvldiameter(root->left);
+    int r = lvldiameter(root->right);
+    int d = max(mx, l + r);
+    mx = d;
+    return max(l, r) + 1;
+}
 
-    // cout << root->val << " ";
-    vector<int> vl = printTree(root->left);
-
-    vector<int> vr = printTree(root->right);
-
-    if (root->left)
-    {
-        int x = root->left->val;
-        v.push_back(x);
-    }
-    v.insert(v.end(), vl.begin(), vl.end());
-
-    v.insert(v.end(), vr.begin(), vr.end());
-
-    return v;
+int diameter(BNode *root)
+{
+    mx = 0;
+    if (root == NULL)
+        return 0;
+    int l = lvldiameter(root->left);
+    int r = lvldiameter(root->right);
+    return max(mx, l + r);
 }
 
 int main()
@@ -81,12 +82,9 @@ int main()
 
     BNode *root = insert_tree();
 
-    vector<int> v = printTree(root);
+    int v = diameter(root);
 
-    for (int i = 0; i < v.size(); i++)
-    {
-        cout << v[i] << " ";
-    }
+    cout << v;
 
     return 0;
 }
